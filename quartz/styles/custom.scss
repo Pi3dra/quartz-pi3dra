@@ -1,3 +1,29 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+
+body {
+  background: url("/static/background.jpg") no-repeat center center fixed;
+  background-size: cover; // Make it scale to cover the viewport
+}
+
+#quartz-body {
+  //    column-gap: #{map.get($desktopGrid, columnGap)};
+  //row-gap: #{map.get($desktopGrid, rowGap)};
+
+  column-gap: 5rem; // or more!
+  row-gap: 5rem;
+}
+
+.sidebar.left,
+.center,
+{
+  background-color: var(--light);
+  padding: 1rem;       // space inside blocks
+}
+
+.sidebar.right{} 
+
+footer {
+  background-color: var(--light);
+  padding: 1rem; // space inside footer
+}

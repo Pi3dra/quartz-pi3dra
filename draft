@@ -1,0 +1,55 @@
+The idea is to put this somehow in the index.html file:
+
+probably going to have to edit the
+<div class="video-background-container">
+  <video autoplay muted loop playsinline class="video-background">
+    <source src="/static/background.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <div class="content">
+    <!-- Your page content here -->
+  </div>
+</div>
+
+and this in the scss:
+@use "./base.scss";
+
+
+body {
+  background: url("/static/background.jpg") no-repeat center center fixed;
+  background-size: cover; // Make it scale to cover the viewport 
+}
+
+
+.sidebar.left {
+  background-color: var(--darkgray);
+  color: var(--light);
+}
+
+
+.video-background-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* full viewport height */
+  overflow: hidden;
+}
+
+.video-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+  object-fit: cover; /* cover the entire container */
+}
+
+.content {
+  position: relative;
+  z-index: 1; /* on top of video */
+  color: white;
+  padding: 2rem;
+}

@@ -6,7 +6,7 @@ const Logo: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
       <img
         src="./static/icon.png"
         alt="My Blog Logo"
-        style={{ width: "180px", height: "180px", margin: "10px auto", display: "block" }}
+        style={{margin: "10px auto", display: "block" }}
       />
     </div>
   )
@@ -18,13 +18,13 @@ Logo.css = `
   margin-bottom: 15px;
 }
 .logo img {
-  max-width: 100%;
+  max-width: 180px;
   height: auto;
 }
+
 @media (max-width: 768px) {
   .logo img {
     width: 40px;
-    height: 40px;
   }
 }
 `

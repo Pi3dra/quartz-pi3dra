@@ -4,7 +4,7 @@ const Logo: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
   return (
     <div class={`logo ${displayClass ?? ""}`}>
       <img
-        src="/static/icon.png"
+        src="./static/icon.png"
         alt="My Blog Logo"
         style={{ width: "180px", height: "180px", margin: "10px auto", display: "block" }}
       />

@@ -14,13 +14,12 @@ const Logo: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
 
 Logo.css = `
 .logo {
-  text-align: center;
-  margin-bottom: 15px;
 }
 .logo img {
   max-width: 180px;
   height: auto;
 }
+
 
 @media (max-width: 768px) {
   .logo img {

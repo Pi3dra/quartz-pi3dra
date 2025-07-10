@@ -27,7 +27,7 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   left: [
 		Component.Logo(),
-    Component.PageTitle(),
+    Component.DesktopOnly(Component.PageTitle()),
     Component.MobileOnly(Component.Spacer()),
     Component.Flex({
       components: [

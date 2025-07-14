@@ -6,33 +6,121 @@ body {
   background-size: cover; // Make it scale to cover the viewport
 }
 
+//This is responsable for gaps between sidebars
 #quartz-body {
-  //    column-gap: #{map.get($desktopGrid, columnGap)};
-  //row-gap: #{map.get($desktopGrid, rowGap)};
-
-  column-gap: 5rem; // or more!
-  row-gap: 5rem;
+  column-gap: 1rem; // or more!
+  row-gap: 1rem;
 }
 
-.sidebar.left,
+
+
 .center,
-{
+footer,
+.sidebar.left
+{  
+  border-radius: 0.5rem; 
   background-color: var(--light);
-  padding: 1rem;       // space inside blocks
 }
 
-.sidebar.right{} 
+.article-title{
+  font-size: 3rem
+}
 
+.center,
 footer {
-  background-color: var(--light);
-  padding: 1rem; // space inside footer
+  box-sizing: border-box;
+  padding: 1rem;  // or whatever you want
 }
 
+//Reordering lef-sidebar on mobil
+/* Default desktop styling: Explorer appears below PageTitle/Spacer */
+.explorer {
+  order: 0; /* Ensure it stays in its natural position */
+}
+
+/* Mobile mode: Move Explorer next to Search */
+@media (max-width: 768px) {
+  .sidebar.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar.left{
+    position:static !important;
+  }
+  
+  .explorer-content{
+    box-sizing: border-box;
+    padding: 1rem !important;  // or whatever you want
+  }
+
+  .explorer {
+    order: 2; /* Place Explorer after Flex (which contains Search) */
+    margin-top: 0; /* Remove any default spacing */
+    margin-bottom: 0;
+    align-self: center;
+  }
+  .flex {
+    order: 1; /* Ensure Flex (with Search) comes before Explorer */
+    display: flex;
+    flex-direction: row;
+  }
+
+
+
+  .explorer-content {
+    font-size:1.8rem;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 400px !important;  /* set the size */
+    height: 400px !important; /* or whatever fits */
+    background-color: var(--light) !important;
+    border-radius: 8px;
+    z-index: 1000 !important;
+  }
+
+  
+.explorer {
+  position: relative;
+  z-index: 999;
+}
+
+  
+.explorer.active .explorer-content {
+  display: block;
+}
+  .blur-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  z-index: 998;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.blur-overlay.active {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+
+}
+
+body[data-slug="404"] #quartz-body .sidebar.left {
+   background: transparent;
+}
+/* 
+}
 .darkmode svg {
   width: 40px;
   height: 40px;
 }
-
 
 .mobile-explorer {
   width: 40px;
@@ -46,8 +134,8 @@ footer {
 }
 
 .search-button {
-  width: 40px;
-  height: 40px;
+  width: 40px !important;
+  height: 40px !important;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -61,4 +149,5 @@ footer {
   width: 40px !important;
   height: 40px !important;
 }
+*/
 

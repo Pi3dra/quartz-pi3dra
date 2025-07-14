@@ -37,9 +37,11 @@ export const defaultContentPageLayout: PageLayout = {
           grow: true,
         },
       ],
+
     }),
-    Component.Explorer(),
+		Component.Explorer(),
   ],
+
   right: [
     Component.Graph(),
     Component.DesktopOnly(Component.TableOfContents()),

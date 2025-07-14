@@ -3,11 +3,13 @@ import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } fro
 const Logo: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
   return (
     <div class={`logo ${displayClass ?? ""}`}>
-      <img
-        src="./static/icon.png"
-        alt="My Blog Logo"
-        style={{margin: "10px auto", display: "block" }}
-      />
+			<a href="/">
+				<img
+					src="./static/icon.png"
+					alt="Smiling Monkey"
+					style={{margin: "10px auto", display: "block" }}
+				/>
+			</a>
     </div>
   )
 }

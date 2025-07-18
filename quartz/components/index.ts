@@ -24,8 +24,12 @@ import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import Logo from "./Logo"
+import OverlayExplorer from "./_OverlayExplorer"
+import ExplorerNodeOld from "./_ExplorerNodeOld"
 
 export {
+	ExplorerNodeold,
+	OverlayExplorer,
   ArticleTitle,
   Content,
   TagContent,

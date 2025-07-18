@@ -3,7 +3,7 @@ import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } fro
 const Logo: QuartzComponent = ({ displayClass }: QuartzComponentProps) => {
   return (
     <div class={`logo ${displayClass ?? ""}`}>
-			<a href="/">
+			<a href="./">
 				<img
 					src="./static/icon.png"
 					alt="Smiling Monkey"

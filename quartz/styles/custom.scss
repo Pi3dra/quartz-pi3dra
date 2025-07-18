@@ -2,7 +2,7 @@
 
 
 body {
-  background: url("/static/background.jpg") no-repeat center center fixed;
+  background: url("./static/background.jpg") no-repeat center center fixed;
   background-size: cover; // Make it scale to cover the viewport
 }
 
@@ -12,16 +12,15 @@ body {
   row-gap: 1rem;
 }
 
-
-
 .center,
 footer,
 .sidebar.left
 {  
   border-radius: 0.5rem; 
-  background-color: var(--light);
+  background-color: var(--light) ;
 }
 
+//Making article title slightly bigger than H1 
 .article-title{
   font-size: 3rem
 }
@@ -29,10 +28,10 @@ footer,
 .center,
 footer {
   box-sizing: border-box;
-  padding: 1rem;  // or whatever you want
+  padding: 1.5rem;  // or whatever you want
 }
 
-//Reordering lef-sidebar on mobil
+//Reordering lef-sidebar on mobile
 /* Default desktop styling: Explorer appears below PageTitle/Spacer */
 .explorer {
   order: 0; /* Ensure it stays in its natural position */
@@ -40,26 +39,47 @@ footer {
 
 /* Mobile mode: Move Explorer next to Search */
 @media (max-width: 768px) {
+    
+  .search-button{
+    background-color: var(--lightgray) !important;
+  }
+
+  .overlay-explorer {
+    li {
+    padding: 0.5rem 0rem;
+    }
+  }
+
   .sidebar.left {
-    display: flex;
+    //padding:3rem gap: 2rem;
+    //height: 100vh !important;
+    //padding: 3rem 2rem 2rem !important;
+    //display: flex !important;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 
   .sidebar.left{
+    padding: 0.5rem !important;
     position:static !important;
   }
   
-  .explorer-content{
+  .overlay-explorer-content{
     box-sizing: border-box;
     padding: 1rem !important;  // or whatever you want
   }
 
-  .explorer {
+  .search-bar{
+    font-size:1.8rem !important;
+  }
+
+  .overlay-explorer {
+    font-size:1.8rem !important;
     order: 2; /* Place Explorer after Flex (which contains Search) */
     margin-top: 0; /* Remove any default spacing */
     margin-bottom: 0;
+    padding: 0 !important;
     align-self: center;
   }
   .flex {
@@ -68,86 +88,33 @@ footer {
     flex-direction: row;
   }
 
-
-
-  .explorer-content {
-    font-size:1.8rem;
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 400px !important;  /* set the size */
-    height: 400px !important; /* or whatever fits */
+  .overlay-explorer-content {
+    padding: 0 !important;
     background-color: var(--light) !important;
     border-radius: 8px;
-    z-index: 1000 !important;
   }
 
+.darkmode{
+  height: 32px!important;
+  width: 34px !important;
+  border-radius: 4px;
+  background-color: var(--lightgray) !important;
+
+  display: flex;                /* Enable flexbox */
+  align-items: center;         /* Vertical centering */
+  justify-content: center;     /* Horizontal centering */
+  padding: 0;          
   
-.explorer {
-  position: relative;
-  z-index: 999;
+}
+.dayIcon,
+.nightIcon {
+  width: 18px !important;   /* or any desired size */
+  height: 18px !important;
+  margin: 0 !important;
+}
 }
 
-  
-.explorer.active .explorer-content {
-  display: block;
-}
-  .blur-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(6px);
-  z-index: 998;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.blur-overlay.active {
-  pointer-events: auto;
-  opacity: 1;
-}
-
-
-}
 
 body[data-slug="404"] #quartz-body .sidebar.left {
    background: transparent;
 }
-/* 
-}
-.darkmode svg {
-  width: 40px;
-  height: 40px;
-}
-
-.mobile-explorer {
-  width: 40px;
-  height: 40px;
-  padding: 0;
-}
-
-.mobile-explorer svg {
-  width: 40px;
-  height: 40px;
-}
-
-.search-button {
-  width: 40px !important;
-  height: 40px !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.search-button svg {
-  width: 40px !important;
-  height: 40px !important;
-}
-*/
-

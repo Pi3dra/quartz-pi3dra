@@ -27,6 +27,7 @@ Contact: pedro.bartolomei-pandozi [at] etu-upsaclay.fr
 - [[GameDev]] -> Takes on game development and game jams
 - [[ProgTank]] -> Networking project on adeept raspberry tanks
 - [[Personal Home Lab]]
+- [[ Hack The Box CPTS Certification]]
 
 # Previous work or projects:
 - [[Decret]] -> Linux Userspace Vulnerability Reproducer

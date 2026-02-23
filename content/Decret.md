@@ -1,11 +1,5 @@
-
-#WIP
-
 # Introduction
-The main goal of my internship was to improve the open source project: DECRET, through 2 main axes:
 
-Improving the way DECRET retrieves and uses security metadata to make the tool more efficient and more reliable.
-Setting up  and designing CI pipelines to thoroughly test the code and the quality.
 
 ## Defining DECRET
 DECRET is an open source tool developed at Télécom SudParis, in partnership with Orange. It aims to semi-automatically reproduce userspace vulnerabilities in Debian, through the generation of vulnerable Docker images.
@@ -35,15 +29,15 @@ This is not directly a feature of Decret, but more of a consequence of using the
 # State of the Art
 The state of the art on automatic vulnerability reproduction is rather deceiving, what we can find at the time of writing, are mainly repositories or collections of already set-up environments (except KernJC), I could find three main examples:
 
-- kernJC: An automatic vulnerable environment generation specific to Linux kernel vulnerabilities.
+- [kernJC](https://github.com/NUS-Curiosity/KernJC): An automatic vulnerable environment generation specific to Linux kernel vulnerabilities.
 
-- Vulhub: An open source project which currently has a collection of around 300 Docker images that are tailored to reproduce specfic CVEs. 
+- [Vulhub](https://github.com/vulhub/vulhub): An open source project which currently has a collection of around 300 Docker images that are tailored to reproduce specfic CVEs. 
 
-- OWASP VWAD (Vulnerable Web Applications Directory): A collection of known vulnerable web applications, which are containerized through different methods.
+- [OWASP VWAD](https://owasp.org/www-project-vulnerable-web-applications-directory/): (Vulnerable Web Applications Directory): A collection of known vulnerable web applications, which are containerized through different methods.
 
 Some honorable mentions:
-- VulnLab: 120 vulnerable machines, offering a pentesting environment.
-- Metasploitable3: a single VM with a ton of vulnerabilities.
+- [VulnLab](https://github.com/Yavuzlar/VulnLameta): 120 vulnerable machines, offering a pentesting environment.
+- [Metasploitable3](https://github.com/rapid7/metasploitable3): a single VM with a ton of vulnerabilities.
 
 
 If we compare DECRET with these solutions we can gather some conclusions:
@@ -54,7 +48,7 @@ One of the downsides of these approaches is that they are often limited to a fie
 
 Also, some of these approaches propose vulnerabilities that are not really software-based like weak credentials or secrets, which is out of the scope of DECRET.
 
-And these solutions are also severely limited, knowing that we ended 2024 with 40,009 published CVEs, up over 38% from the 28,818 CVEs published in 2023. We can confidently say that a couple of hundred user-made environments isn’t enough to keep up to date with the growing number of CVEs.
+And these solutions are also severely limited, [knowing that we ended 2024 with 40,009 published CVEs, up over 38% from the 28,818 CVEs published in 2023](https://jerrygamblin.com/2025/01/05/2024-cve-data-review/). We can confidently say that a couple of hundred user-made environments isn’t enough to keep up to date with the growing number of CVEs.
 
 So this is where DECRET currently comes in, at the start of the pipeline, when we first try to create a vulnerable environment, taking out a good chunk out of the tedious guesswork of finding and installing vulnerable packages.
 
@@ -66,15 +60,15 @@ During my internship, I enhanced several aspects of DECRET, focusing primarily o
 Available CVE metadata was often incomplete, inaccurate, and lacked a user-friendly query platform.
 Vulnerable environments can be reproduced in two ways: installing a vulnerable package and its dependencies in a recent, stable Debian release. Or using the Debian release where the vulnerability was first identified. Each method has advantages, but my DECRET update adopts the latter approach, moving away from reliance on JSON data.
 DECRET previously relied on two sources: 
-(These examples are tailored for CVE-2016-3714)
+(These examples are tailored for **CVE-2016-3714**)
 
-1. **JSON Data** (https://security-tracker.debian.org/tracker/data/json): This provides package version status (vulnerable or fixed) for current Debian releases (e.g., Bullseye, Bookworm, Trixie, Sid). However, it lacks historical data to confirm if a release was ever vulnerable, limiting its use for the recent-release method.
+1. [**JSON Data**](https://security-tracker.debian.org/tracker/data/json): This provides package version status (vulnerable or fixed) for current Debian releases (e.g., Bullseye, Bookworm, Trixie, Sid). However, it lacks historical data to confirm if a release was ever vulnerable, limiting its use for the recent-release method.
 
-2. **CVE-Specific Page** (https://security-tracker.debian.org/tracker/CVE-2016-3714): This includes two tables:
+2. [**CVE-Specific Page**](https://security-tracker.debian.org/tracker/CVE-2016-3714): This includes two tables:
 Source Packages Table: Mirrors the JSON data.
 Fixed Versions Table: Indicates a release was vulnerable if a fix exists for it.
 
-(ADD TABLE IMAGES IN HERE)
+![table_img](./images/decret_table.png)
 
 DECRET primarily used JSON data, which supported the recent-release method but required inferring vulnerable versions from the version prior to the fixed one.
 I thus shifted DECRET to exclusively use the CVE-specific page, leveraging the "Fixed Versions" table, which includes:
@@ -83,27 +77,14 @@ I thus shifted DECRET to exclusively use the CVE-specific page, leveraging the "
 - Debian Bugs
 
 This enabled two new methods to identify vulnerable versions:
-1. Bug Tracker Search: If a release has a bug identifier, I searched the Debian bug tracker for a "Found in version" tag, providing reliable vulnerable release and package version data. This method works well for unstable/Sid releases, which often have bug identifiers, but less so for others.
 
-2. DSA/DLA Search: For releases with a Debian Security Advisory (DSA) or Debian Long-Term Support Advisory (DLA), I checked for bug identifiers in these advisories and applied the bug tracker method. To ensure relevance, I verified the CVE number appeared on the advisory page, as some bug identifiers may not correspond to the target CVE.
+1. **Bug Tracker Search:** If a release has a bug identifier, I searched the Debian bug tracker for a "Found in version" tag, providing reliable vulnerable release and package version data. This method works well for unstable/Sid releases, which often have bug identifiers, but less so for others.
+
+2. **DSA/DLA Search:** For releases with a Debian Security Advisory (DSA) or Debian Long-Term Support Advisory (DLA), I checked for bug identifiers in these advisories and applied the bug tracker method. To ensure relevance, I verified the CVE number appeared on the advisory page, as some bug identifiers may not correspond to the target CVE.
 
 Currently, to choose the most reliable vulnerable configuration, DECRET prioritizes methods the following way, from most reliable to less reliable: Currently Vulnerable, Bug Tracker, DSA/DLA, Previous Version. And if there are multiple releases with the same method, it will choose the most recent release.
 
-(MAY BE GOOD TO ADD A WORKFLOW/GRAPH HERE)
-
-### Remaining Challenges:
-- The information gathered through the page could be cached and re-collected from the following sources:
-    1. https://security-tracker.debian.org/tracker/data/json
-    2. https://salsa.debian.org/security-tracker-team/security-tracker/-/blob/master/data/CVE/list?ref_type=heads
-    3.https://salsa.debian.org/security-tracker-team/security-tracker/-/blob/master/data/DSA/list?ref_type=heads
-	Knowing that the latter two are text files that would need custom parsing.
-
-- Bug reports may list multiple "Found in" versions, complicating release-version mapping. This could be addressed by:
-Inferring the release from version names (e.g., "debX" tags, where X is the Debian release number).
-Cross-referencing version timestamps with Debian snapshot sources.gz files to locate the specified version.
-Currently DECRET takes only the first version and hopes it concerns the given release.
-
-
+![flowchart](./images/implementation.png)
 
 
 ## Missing CI pipeline for GitHub:
@@ -119,6 +100,7 @@ And at the same time we run a workflow that takes these CVEs, and tries to explo
 
 ## Getting rid of the selenium dependency:
 Before, DECRET used selenium to: 
+
 - Retrieve PoC’s from Exploit Database.
 - Retrieve CVE information from the debian security tracker.
 
@@ -131,3 +113,67 @@ Selenium’s browser driver, while effective for JavaScript-heavy sites, added u
 - Added filtering flags to specify which method to use for information retrieval
 - Added support for new releases (bookworm, trixie, sid/unstable)
 
+# Possible improvements
+
+## Kernel Support
+This is an obvious area for improvement.
+How to implement it in DECRET has already been studied, leveraging tools like [RunCVM](https://github.com/newsnowlabs/runcvm) and [Kata Containers](https://katacontainers.io/).
+However, it hasn’t been properly implemented yet.
+
+## Better Usage of the **sid** Release
+
+Currently, when pulling a **sid** image from Docker Hub, DECRET fetches the latest available version.
+At the time of writing, this corresponds to the **trixie release (in testing)**. For reproducing older CVEs such as [**CVE-
+2014-0160](https://security-tracker.debian.org/tracker/CVE-2014-0160)**, it’s clear that trixie did not exist at that time.
+The current workaround is to configure the sid release to only use snapshot sources, so that package versions reflect
+their state in, for example, 2014.
+However, an interesting extension would be to also pull older **sid** container images (which are available to a certain
+extent), corresponding to the year the CVE was discovered.
+
+## Independence from DockerHub
+DECRET could build its own Docker containers instead of pulling them from Docker Hub. While this may seem
+complex, it would eliminate issues like the [Docker pull rate limits](https://docs.docker.com/docker-hub/usage/pulls/). It would also open the door to further improvements,
+such as:
+
+- Creating slimmer or more feature complete environments
+- Enabling more precise version control
+- Ensuring greater consistency across environments
+
+## Testing on Large Dataset of CVEs
+It would be valuable to evaluate DECRET against a large dataset of CVEs to assess:
+
+- How well it reproduces vulnerable environments
+- Where it fails
+- Why those failures occur
+
+This would provide insight into the tool’s limitations and help guide future improvements.
+
+## Better Identification of vulnerable versions
+
+While the upgraded version of DECRET is more reliable and user-friendly, it still has some limitations.
+For example, in the case of [CVE-2015-5602](https://security-tracker.debian.org/tracker/CVE-2015-5602), the tool incorrectly selects the version. It requires manual intervention
+using the --choose flag to specify **1.8.10p3-1+deb8u2** from the jessie release.
+
+One potential enhancement could involve patch-based version verification. This approach involves:
+
+1. Determining a version range suspected to be vulnerable.
+2. Identifying the patch that fixed the CVE.
+3. Iterating through versions to check which ones lack the patch.
+
+Although this wouldn’t guarantee perfect accuracy, it would likely be a step in the right direction. This technique is
+described in the KernJC paper, where it’s used to detect vulnerable kernel versions.
+Whether this method can be generalized to arbitrary Debian packages remains an open question, as package structures
+and patching practices vary significantly.
+
+# Conclusions
+
+DECRET addresses a growing and urgent need in cybersecurity : the ability to **reliably and efficiently reproduce
+vulnerable environments.** In contrast to curated collections like Vulhub or OWASP VWAD, DECRET aims to auto-
+mate the reproduction of vulnerabilities directly from upstream Debian package data and snapshots, helping to bridge
+the gap between theoretical CVE data and practical exploit environments.
+
+Throughout my internship, DECRET has seen notable improvements, including better metadata handling, a reliable
+CI pipeline, caching mechanisms, and improved usability through CLI flags. These changes have made it faster, more
+robust, and easier to test various CVE configurations reducing manual effort and improving reproducibility.
+However, there’s still room to grow. Areas like kernel support, full independence from Docker Hub, and systematic
+testing across large CVE datasets could significantly expand the scope and reliability of DECRET.

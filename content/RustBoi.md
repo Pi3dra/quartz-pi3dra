@@ -65,7 +65,8 @@ struct Memory {
 
     io: [u8; 128],
     interrupt: [u8; 1],
-}```
+}
+```
 
 Then I implemented a **function** which maps and address to one of the actual memory sections.
 
@@ -79,7 +80,8 @@ Then I defined the following wrapper structure to hold the Memory and Joypad:
 pub struct Bus {
     memory: Memory,
     joypad: u8,
-}```
+}
+```
 
 
 with the following trait:
@@ -101,7 +103,8 @@ pub struct GameBoi {
     cpu: CPU,
     ppu: PPU,
     bus: Rc<RefCell<Bus>>,
-}```
+}
+```
 
 These allows us to mutably share the state of memory between the CPU, and BUS.
 
@@ -298,7 +301,6 @@ pub fn step(&mut self) -> u8 {
         self.handle_interrupts();
         cycles
     }
-
 ```
 
 # PPU

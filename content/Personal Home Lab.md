@@ -1,5 +1,7 @@
 # Why Home‑Lab at All?
 
+#WIP
+
 I decided to start **home labbing** for a mix of practical and privacy reasons.
 
 On the practical side, I want to learn more about **networking, servers, virtualization, and system administration** by actually running things myself instead of just reading about them. There’s no better teacher than breaking your own setup and fixing it at 2 a.m.
